@@ -1,38 +1,212 @@
-.App {
-  text-align: center;
+*{
+  margin: 0;
+  padding: 0;
+  font-family: Garamond, serif;
+}
+h1 {
+  font-family: Georgia, serif;
+}
+h2  {
+    font-family: "lucida sans unicode", "lucida grande", sans-serif;
+    font-size: 17px;
+    line-height: 20px;
+  }   
+.note{
+  font: italic small-caps bold 16px/2 cursive;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+:root {
+  --clr-accent: #fa3660;
+  --clr-light: #f9f9f9;
+  --clr-rgba: rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+button {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.2em 0.7em;
+  color: var(--clr-accent);
+  background-color: var(--clr-rgba);
+  border: 3px solid var(--clr-accent);
+  border-radius: 3px;
+  transition: transform 0.3s, background-color 0.3s, color 0.3s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+button:hover {
+  transform: translateY(-5px);
+  background-color: var(--clr-accent);
+  color: var(--clr-light);
+}
+
+/* Admin Navigation page css */
+
+.navimg{
+  cursor: pointer;
+}
+
+nav{
+  background-color:bisque;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+nav ul{
+  width: 100%;
+  list-style: none;
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+nav li{
+  height: 50px;
+}
+
+nav a{
+  height: 100%;
+  padding: 0 30px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: black;
+  border-radius: 0px;
+}
+nav a:hover{
+  background-color: rgb(252, 218, 176);
+  transform: scale(1.1);
+  border-radius: 5%;
+  transition: 1s;
+}
+
+.submenu-btn:hover{
+  background-color: rgb(252, 218, 176);
+  transform: scale(.7);
+  border-radius: 5%;
+  transition: 1s;
+}
+nav li:first-child{
+  margin-right: auto;
+}
+
+nav li:last-child a:hover{
+  background-color: bisque;
+  transform: scale(0.9);
+}
+
+.menu-button{
+  display: none;
+}
+
+.sidebar,.submenu{
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 350px;
+  z-index:199;
+  background-color: rgba(255, 228, 196, 0.101);
+  backdrop-filter: blur(10px);
+  box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border-radius: 0px;
+}
+
+.sidebar a:hover{
+  background-color: rgb(248, 227, 202);
+  transform: scale(1.1);
+  transition: 1s;
+  border-radius: 30px;
+}
+
+.submenu a:hover{
+  background-color: rgb(248, 227, 202);
+  transform: scale(1.1);
+  transition: 1s;
+  border-radius: 20px;
+}
+
+.sidebar li{
+  width: 100%;
+}
+
+.sidebar a {
+  width: 80%;
+}
+
+.submenu li{
+  width: 100%;
+}
+
+.submenu a {
+  width: 100%;
+}
+.sidebar li:first-child a{
+  align-items: right;
+  justify-content: right;
+  cursor: pointer;
+}
+
+.submenu li:first-child a{
+  align-items: right;
+  justify-content: right;
+  cursor: pointer;
+}
+
+.sidebar li:first-child a:hover{
+  background-color: rgba(255, 228, 196, 0.101);
+  transform: scale(1);
+}
+.submenu li:first-child a:hover{
+  background-color: rgba(255, 228, 196, 0.101);
+  transform: scale(1);
+}
+.sidebar.hidden ,.submenu.hidden{
+    display: none;
+}
+
+.sidebar.visible,.submenu.visible {
+    display: flex;
+}
+
+@media(max-width: 800px){
+  .hideOnMobile{
+    display: none;
+  }
+  .menu-button{
+    display: block;
+    cursor: pointer;
+  }
+}
+
+@media(max-width: 400px){
+  .sidebar{
+    width: 100%;
+  }
+}
+
+/* Student login page css */
+.background-image {
+  background-image: url('C:/Users/Harit/Desktop/project/frontend/src/assets/images/attendance_bg.png');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100vW;
+  position: relative;
+}
+
+.overlay-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: white;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+Modal.Title{
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
