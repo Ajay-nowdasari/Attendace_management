@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /.pnp
+/whatsapp_files
 .pnp.js
 
 # testing

@@ -1,16 +1,15 @@
 *{
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: Garamond, serif;
 }
-h1 {
+
+h1 ,h2{
+  letter-spacing: 2px;
   font-family: Georgia, serif;
 }
-h2  {
-    font-family: "lucida sans unicode", "lucida grande", sans-serif;
-    font-size: 17px;
-    line-height: 20px;
-  }   
+
 .note{
   font: italic small-caps bold 16px/2 cursive;
 }
@@ -18,7 +17,7 @@ h2  {
 :root {
   --clr-accent: #fa3660;
   --clr-light: #f9f9f9;
-  --clr-rgba: rgba(0, 0, 0, 0.1);
+  --clr-rgba: rgba(140, 121, 121, 0.1);
 }
 
 button {
@@ -192,7 +191,14 @@ nav li:last-child a:hover{
   background-position: center;
   height: 100vh;
   width: 100vW;
+  filter: blur(10px);
   position: relative;
+}
+
+.dbl_btns{
+  justify-content: space-evenly;
+  align-items: center;
+  display: flex;
 }
 
 .overlay-content {
@@ -200,13 +206,66 @@ nav li:last-child a:hover{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
+  color: black;
   text-align: center;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: #fdfeff;
   padding: 20px;
+  border: 1px solid;
+  box-shadow: 0px 0px 30px rgb(9, 8, 8);
   border-radius: 10px;
+
 }
 
 Modal.Title{
   font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* Otp verification page */
+
+.otp-area{
+  width: 70%;
+  display: flex;
+  gap:10px;
+}
+
+.otp-area input{
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.otp-area input:focus{
+  outline: 2px solid;
+  outline-offset: 2px;
+}
+
+/* student dashboard*/
+.std_Attendance_modal .modal-dialog {
+  max-width: 95%; /* Change this value to your desired width */
+}
+
+.light-mode {
+  background-color: rgb(255, 244, 230);
+  color: black;
+}
+
+.dark-mode {
+  background-color: #b4b7bb; 
+  color: black; 
+}
+
+.dark-mode .thead-dark th {
+  color: white;
+  background-color: #6c757d; /* Dark mode table header */
+}
+
+.btn-outline-secondary {
+  width: 150px;
+  color:#343a40; /* Button text color in dark mode */
+  border-color: #343a40; /* Button border color in dark mode */
+}
+
+.std_mdl_hdr{
+  justify-content: space-between;
 }

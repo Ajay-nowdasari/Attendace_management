@@ -26,6 +26,7 @@ const NavBar = () => {
     return (
         <div>
             <img  className="navimg" src={navimg} alt="Dr.B.R.Ambedhkar Government Model Residential Polytechnic, Rajamahendravaram" height="160" width="100%" />
+            <hr />
             <nav>
                 {/* Sidebar Menu */}
                 <ul className={`sidebar ${isSidebarVisible ? 'visible' : 'hidden'}`}>
