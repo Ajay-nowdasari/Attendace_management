@@ -1,13 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
+import App from './App';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import NavBar from './Admin/Components/admin_nav';
 import AddDept from "./Admin/Components/AddDept";
 import AllStudents from "./Admin/Components/AllStudents";
 import Attendance from "./Admin/Components/Attendance";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import StudentLogin from './User/Components/student_login';
-import App from './App';
+import Login from './User/Components/login';
+import AdminDashboard from './Admin/Components/adminDashboard';
 import OtpVerification from './User/Components/stdOtp_verification';
 import StudentDashboard from './User/Components/StudentDashboard';
 import { useState } from 'react';
@@ -21,7 +22,7 @@ function Routing() {
         <Router>
           <Routes>
             <Route path='/*' element={<Navigate to="/student_login"/>}/>
-            <Route path='/student_login' element={<StudentLogin/>}/>
+            <Route path='/' element={<Login/>}/>
           {/* </Routes> */}
         {/* </Router> */}
     {/* ):( */}
@@ -30,6 +31,7 @@ function Routing() {
             <Route path="/Add_dept" element={<AddDept />} />
             <Route path="/All_students" element={<AllStudents />} />
             <Route path="/Attendance" element={<Attendance />} />
+            <Route path="/Admin_Dashboard" element={<AdminDashboard/>}/>
             
             {/* student */}
             <Route path="/OTP" element={<OtpVerification/>}/>

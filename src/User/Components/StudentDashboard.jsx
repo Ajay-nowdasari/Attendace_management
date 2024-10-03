@@ -14,7 +14,20 @@ const StudentDashboard = () => {
       <Modal show={true} scrollable className={`std_Attendance_modal ${darkMode ? 'dark-mode' : 'light-mode'}`} centered>
         <Modal.Header className='std_mdl_hdr'>
           <Modal.Title>
-            <h1>Student Attendance</h1>
+            <div>
+              <h1>
+                <span>A</span>
+                <span>t</span>
+                <span>t</span>
+                <span>e</span>
+                <span>n</span>
+                <span>d</span>
+                <span>a</span>
+                <span>n</span>
+                <span>c</span>
+                <span>e</span>
+              </h1>
+            </div>          
             <p>
                 Welcome to {}
             </p>
@@ -26,9 +39,9 @@ const StudentDashboard = () => {
             {darkMode ? 'Light Mode' : 'Dark Mode'}
           </button>
         </Modal.Header>
+        
         <Modal.Body>
-          
-            <table className="table table-hover p-0">
+            <table className="table table-hover table-bordered">
 
               <thead className="thead-dark table-warning">
                 <tr>
@@ -184,11 +197,45 @@ const StudentDashboard = () => {
               </tbody>
 
             </table>
-          
         </Modal.Body>
+
+        <Modal.Footer>
+          <h1>
+            <span>A</span>
+            <span>n</span>
+            <span>n</span>
+            <span>o</span>
+            <span>u</span>
+            <span>n</span>
+            <span>c</span>
+            <span>e</span>
+            <span>m</span>
+            <span>e</span>
+            <span>n</span>
+            <span>t</span>
+            <span>s</span>
+          </h1>
+          <div>
+
+          </div>
+        </Modal.Footer>
       </Modal>
     </div>
   );
 };
 
 export default StudentDashboard;
+<h1>
+<span>A</span>
+<span>n</span>
+<span>n</span>
+<span>o</span>
+<span>u</span>
+<span>n</span>
+<span>c</span>
+<span>e</span>
+<span>m</span>
+<span>e</span>
+<span>n</span>
+<span>t</span>
+</h1>
