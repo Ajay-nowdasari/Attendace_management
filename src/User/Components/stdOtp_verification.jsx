@@ -77,6 +77,7 @@ const OtpVerification = () => {
             <div className="overlay-content">
                 <h2>Otp Verification</h2>
                 <p>Enter your {otpLength}-digit OTP</p>
+                
                 <form>
 
                     <div className="otp-area p-4">
@@ -95,6 +96,7 @@ const OtpVerification = () => {
 
                     <div className='dbl_btns'>
                         <Button
+                            className='my-3'
                             variant="success"
                             onClick={gotonext}
                             disabled={isExpired} // Disable button if OTP has expired
@@ -102,6 +104,7 @@ const OtpVerification = () => {
                             Verify OTP
                         </Button>
                         <Button
+                            className=''
                             variant="warning"
                             onClick={handleSubmit}
                             disabled={!isExpired} // Disable button if OTP has expired

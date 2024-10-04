@@ -1,8 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import App from './App';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import NavBar from './Admin/Components/admin_nav';
 import AddDept from "./Admin/Components/AddDept";
 import AllStudents from "./Admin/Components/AllStudents";
 import Attendance from "./Admin/Components/Attendance";
@@ -45,4 +42,3 @@ function Routing() {
 }
 
 export default Routing;
-

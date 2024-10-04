@@ -65,7 +65,7 @@ const AllStudents = ()=> {
                         value={filYear} 
                         onChange={handleChange} 
                       >
-                        <option value="All_dept">All</option>
+                        <option value="All_dept" selected>All</option>
                         <option value="cse">C.S.E</option>
                         <option value="ece">E.C.E</option>
                         <option value="mech">MECH</option>
@@ -80,7 +80,7 @@ const AllStudents = ()=> {
                         value={filDept}
                         onChange={handleChange}
                       >
-                        <option value="All_year">All</option>
+                        <option value="All_year" selected>All</option>
                         <option value="first">1st Year</option>
                         <option value="second">2nd Year</option>
                         <option value="third">3rd Year</option>
@@ -89,18 +89,18 @@ const AllStudents = ()=> {
                     </div>
 
                     <div>
-                    <label for="filSec">Choose an Section:</label>
+                    <label for="filSec">Choose a Section:</label>
                       <select
                           id="filSec"
                           name="filSec"
                           value={filSec}
                           onChange={handleChange}
                         >
-                          <option value="All_year">All</option>
-                          <option value="first">1st Year</option>
-                          <option value="second">2nd Year</option>
-                          <option value="third">3rd Year</option>
-                          <option value="final">Final Year</option>
+                          <option value="All_year" selected>All</option>
+                          <option value="A">A Section</option>
+                          <option value="B">B Section</option>
+                          <option value="C">C Section</option>
+                          <option value="D">D Section</option>
                       </select>
                     </div>
                 </div>

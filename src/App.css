@@ -86,26 +86,6 @@ nav li:first-child{
 
 .top-nav_menu {
   display: flex;
-.span{
-  position: absolute;
-  top:0;
-  left: 0;
-  width: 95%;
-  height: 100%;
-  background-color: #fa3660;
-  border-radius: 10px;
-  transition: 0.5s;
-}
-}
-.top-nav_menu li a:nth-child(1):hover~span{
-  left: 0px;
-}
-.top-nav_menu li a:nth-child(2):hover~span{
-  left: 90px;
-}
-
-.top-nav_menu li a:nth-child(3):hover~span{
-  left: 180px;
 }
 
 h1 span {
@@ -183,6 +163,7 @@ h1 span:nth-child(13){
   align-items: flex-start;
   justify-content: flex-start;
   border-radius: 0px;
+  transition:transform 1s ease;
 }
 
 .sidebar a:hover{
@@ -230,10 +211,12 @@ h1 span:nth-child(13){
   background-color: rgba(255, 228, 196, 0.101);
   transform: scale(1);
 }
+
 .submenu li:first-child a:hover{
   background-color: rgba(255, 228, 196, 0.101);
   transform: scale(1);
 }
+
 .sidebar.hidden ,.submenu.hidden{
     display: none;
 }
@@ -256,7 +239,7 @@ h1 span:nth-child(13){
   .ftr_hr{
     display: none;
   }
-  .footer_div{
+  .footer_vr{
     border-right: 1px solid gray;
     height: 100px;
   }
@@ -308,6 +291,7 @@ h1 span:nth-child(13){
 }
 
 /* Student login page css */
+
 .background-image {
   background-image: url('C:/Users/Harit/Desktop/project/frontend/src/assets/images/attendance_bg.png');
   background-size: cover;
@@ -363,6 +347,7 @@ Modal.Title{
 }
 
 /* student dashboard*/
+
 .std_Attendance_modal .modal-dialog {
   max-width: 95%; /* Change this value to your desired width */
 }
@@ -379,7 +364,7 @@ Modal.Title{
 
 .dark-mode .thead-dark th {
   color: white;
-  background-color: #6c757d; /* Dark mode table header */
+  background-color: #6c757d; 
 }
 
 .btn-outline-secondary {
@@ -409,7 +394,12 @@ thead {
   z-index: 1;
 }
 
+table{
+  text-align: center;
+}
+
 /* admin dashboard css */
+
 .admin_body{
   display: flex;
   justify-content: center;
@@ -454,6 +444,7 @@ thead {
 }
 
 /* footer css */
+
 .footer_links,.footer_nav *,.footer_div{
   justify-content: center;
   align-items: center;
@@ -495,4 +486,8 @@ ul{
   flex-basis: 200px; 
 }
 
-
+.nav_active.active {
+  background-color: #787978;
+  color: #f6f5f5;  
+  fill: #f9f9f9;
+}

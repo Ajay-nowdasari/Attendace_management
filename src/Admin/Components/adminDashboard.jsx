@@ -23,7 +23,7 @@ const AdminDashboard = ()=> {
             </div>
             
             <div className="admin_body">
-                <div className="container">
+                <div className="container mt-4">
                     <div className="card">
                         <div className="content py-4" onClick={gotoAllstudents}>
                             <div className="title">
@@ -91,9 +91,9 @@ const AdminDashboard = ()=> {
             </div>
             <div style={{position: "sticky", bottom: "0" , zIndex:"1"}}>
             </div>
-            <Footer/>
-
         </div>
+        <Footer/>
+
     </div>
     );
 }

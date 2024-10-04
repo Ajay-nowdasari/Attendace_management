@@ -40,7 +40,7 @@ const StudentDashboard = () => {
           </button>
         </Modal.Header>
         
-        <Modal.Body>
+        <Modal.Body className='pt-0'>
             <table className="table table-hover table-bordered">
 
               <thead className="thead-dark table-warning">
