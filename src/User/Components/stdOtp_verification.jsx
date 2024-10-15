@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const OtpVerification = () => {
     const otpLength = 6; // Number of OTP digits
     const [otp, setOtp] = useState(new Array(otpLength).fill(""));
-    const [timeleft, setTimeleft] = useState(6); // Timer for 60 seconds
+    const [timeleft, setTimeleft] = useState(60); // Timer for 60 seconds
     const [isExpired, setIsExpired] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
+    const { username, usertype } = location.state || {};
+    const API_base_url = "http://127.0.0.1:8000/api/";
 
     // Handle OTP input change
     const handleChange = (e, index) => {
@@ -34,52 +38,58 @@ const OtpVerification = () => {
     }, [timeleft]);
 
     // Function to handle OTP submission
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!username || !usertype ) {
+            alert("Invalid session. Please login again.");
+            navigate("/login");
+            return;
+          }
         if (isExpired) {
             alert("OTP has expired. Please request a new one.");
             return;
         }
-
-        const response = await fetch('http://your-backend-url/verify-otp/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: 'testuser', // Replace with actual username
+        try {
+            const response = await axios.post(
+              API_base_url + "verify_otp/",
+              {
+                username: username,
                 otp: otp.join(''),
-            }),
-        });
-
-        const data = await response.json();
-        if (response.status === 200) {
-            alert("OTP verified successfully!");
-            // setTimeout(() => {
-            //     if(userType === 'Admin'){
-            //         navigate('/Add_dept')
-            //     }else{
-            //         navigate('/StudentDashboard')
-            //     }
-            // }, 3000);
-            
-        } else {
-            alert(data.error || "Failed to verify OTP");
+            },
+              {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+              }
+            );
+            if (response.data.success) {
+                if (usertype === "user") {
+                    navigate("/StudentDashboard");
+                } else if (usertype === "admin") {
+                    navigate("/Admin_Dashboard");
+                } else {
+                    navigate("/All_students");
+                }
+            } else {
+                alert("Invalid OTP");
+                navigate("/");
+            }
+        } catch (error) {
+            if (error.response) {
+              alert("Invalid OTP");
+            }
         }
     };
+    
 
-    const gotonext = () => {
-        // navigate('/StudentDashboard');
-        navigate('/Admin_Dashboard');
-    }
     return (
         <div>
             <div  className="background-image"></div>
             <div className="overlay-content">
                 <h2>Otp Verification</h2>
-                <p>Enter your {otpLength}-digit OTP</p>
+                <p>Check your E-mail</p>
+                <p>Enter {otpLength}-digit OTP</p>
                 
                 <form>
-
                     <div className="otp-area p-4">
                         {otp.map((data, i) => (
                             <input
@@ -98,7 +108,7 @@ const OtpVerification = () => {
                         <Button
                             className='my-3'
                             variant="success"
-                            onClick={gotonext}
+                            onClick={handleSubmit}
                             disabled={isExpired} // Disable button if OTP has expired
                         >
                             Verify OTP

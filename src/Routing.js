@@ -9,7 +9,9 @@ import AdminDashboard from './Admin/Components/adminDashboard';
 import OtpVerification from './User/Components/stdOtp_verification';
 import StudentDashboard from './User/Components/StudentDashboard';
 import { useState } from 'react';
-
+import ForgotPassword from './Admin/Components/password_reset';
+import PasswordResetForm from './Admin/Components/new_password';
+import PasswordResetRequest from './Admin/Components/password_reset';
 function Routing() {
         const [isAuthenticated,setIsAuthenticated] = useState(false);
   return (
@@ -29,7 +31,9 @@ function Routing() {
             <Route path="/All_students" element={<AllStudents />} />
             <Route path="/Attendance" element={<Attendance />} />
             <Route path="/Admin_Dashboard" element={<AdminDashboard/>}/>
-            
+
+            <Route path="/" element={<PasswordResetRequest />} />
+            <Route path="/reset-password" element={<PasswordResetForm />} />
             {/* student */}
             <Route path="/OTP" element={<OtpVerification/>}/>
             <Route path="/StudentDashboard" element={<StudentDashboard/>}/>

@@ -2,6 +2,13 @@ import { Row ,Card} from "react-bootstrap";
 import NavBar from "./admin_nav";
 import { useNavigate } from "react-router-dom";
 import Footer from "./footer";
+import img1 from "C:/Users/Harit/Desktop/project/frontend/src/assets/images/img-1_carrousel.png";
+import img2 from "C:/Users/Harit/Desktop/project/frontend/src/assets/images/img-2_carrousel.jpg";
+import img3 from "C:/Users/Harit/Desktop/project/frontend/src/assets/images/img-3_carrousel.jpg"
+import Carousel from 'react-bootstrap/Carousel';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import styled from 'styled-components';
+
 const AdminDashboard = ()=> {
     const navigate = useNavigate();
      
@@ -14,6 +21,31 @@ const AdminDashboard = ()=> {
     const gotoAttendance = () => {
         navigate('/Attendance')
     }
+    const CarouselContainer = styled.div`
+        max-width: 100%;
+        margin: 20px auto; /* Centered with margin */
+        `;
+
+        const CarouselImage = styled.img`
+        height: 400px; /* Carousel image height */
+        object-fit: cover; /* Maintain aspect ratio */
+        transition: transform 0.5s ease; /* Smooth zoom transition */
+
+        &:hover {
+            transform: scale(1.05); /* Zoom effect on hover */
+        }
+        `;
+
+        const CustomCaption = styled(Carousel.Caption)`
+        background-color: rgba(0, 0, 0, 0.6); /* Darker translucent background for captions */
+        padding: 15px;
+        border-radius: 5px; /* Rounded corners */
+        transition: background-color 0.3s ease; /* Smooth background transition */
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.8); /* Darker on hover */
+        }
+        `;
     return(
     <div className="for_ftr">
         <div className="cnt">
@@ -52,7 +84,9 @@ const AdminDashboard = ()=> {
                                 <h1>
                                     Student
                                 </h1>
-                                edhokkarti le 
+                                <p>
+                                    Administer student affairs here.                                
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -68,22 +102,27 @@ const AdminDashboard = ()=> {
                             <h1>
                                 Department
                             </h1>
-                            edhokkarti le </div>
+                                <p>
+                                    Oversee departmental operations here. 
+                                </p> 
+                            </div>
                         </div>
                     </div>
                     <div className="card">
                         <div className="content py-4" onClick={gotoAttendance}>
                             <div className="title">
                                 <svg width="80px" height="80px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" mirror-in-rtl="true">
-                                    <path fill="#494c4e" d="M7 11c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2s2 .9 2 2v1c0 1.1-.9 2-2 2zm-2 6.993L9 18c.55 0 1-.45 1-1v-2c0-1.65-1.35-3-3-3s-3 1.35-3 3v2c0 .552.448.993 1 .993zM19 18h-6c-.553 0-1-.447-1-1s.447-1 1-1h6c.553 0 1 .447 1 1s-.447 1-1 1zm0-4h-6c-.553 0-1-.448-1-1s.447-1 1-1h6c.553 0 1 .448 1 1s-.447 1-1 1zm0-4h-6c-.553 0-1-.448-1-1s.447-1 1-1h6c.553 0 1 .448 1 1s-.447 1-1 1z"/>
-                                    <path fill="#494c4e" d="M22 2H2C.9 2 0 2.9 0 4v16c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 17.5c0 .28-.22.5-.5.5h-19c-.28 0-.5-.22-.5-.5v-15c0-.28.22-.5.5-.5h19c.28 0 .5.22.5.5v15z"/>
+                                    <path fill="black" d="M7 11c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2s2 .9 2 2v1c0 1.1-.9 2-2 2zm-2 6.993L9 18c.55 0 1-.45 1-1v-2c0-1.65-1.35-3-3-3s-3 1.35-3 3v2c0 .552.448.993 1 .993zM19 18h-6c-.553 0-1-.447-1-1s.447-1 1-1h6c.553 0 1 .447 1 1s-.447 1-1 1zm0-4h-6c-.553 0-1-.448-1-1s.447-1 1-1h6c.553 0 1 .448 1 1s-.447 1-1 1zm0-4h-6c-.553 0-1-.448-1-1s.447-1 1-1h6c.553 0 1 .448 1 1s-.447 1-1 1z"/>
+                                    <path fill="black" d="M22 2H2C.9 2 0 2.9 0 4v16c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 17.5c0 .28-.22.5-.5.5h-19c-.28 0-.5-.22-.5-.5v-15c0-.28.22-.5.5-.5h19c.28 0 .5.22.5.5v15z"/>
                                 </svg>
                             </div>
                             <div className="discription">
                                 <h1>
                                     Attendance
                                 </h1>
-                                edhokkarti le 
+                                <p>
+                                    Administer attendance records here.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -91,6 +130,46 @@ const AdminDashboard = ()=> {
             </div>
             <div style={{position: "sticky", bottom: "0" , zIndex:"1"}}>
             </div>
+            <CarouselContainer>
+                <Carousel>
+                    <Carousel.Item>
+                    <CarouselImage
+                        className="d-block w-100"
+                            src={img1}
+                            alt="First slide"
+                        />
+                        <CustomCaption>
+                                <h3 className="slide-title">Welcome to Attendance</h3>
+                                <p className="slide-description">Discover our Site.</p>
+                        </CustomCaption>
+                        </Carousel.Item>
+
+                        {/* New Carousel Items */}
+                        <Carousel.Item>
+                        <CarouselImage
+                            className="d-block w-100"
+                            src={img2}
+                            alt="Fourth slide"
+                        />
+                        <CustomCaption>
+                                <h3 className="slide-title">User-Friendly Dashboard</h3>
+                                <p className="slide-description">Easily manage attendance with a clean, intuitive dashboard that offers a complete overview at a glance.</p>
+                        </CustomCaption>
+                        </Carousel.Item>
+
+                        <Carousel.Item>
+                        <CarouselImage
+                            className="d-block w-100"
+                            src={img3}
+                            alt="Fifth slide"
+                        />
+                        <CustomCaption>
+                                <h3 className="slide-title">Automated Attendance Logs</h3>
+                                <p className="slide-description">Simplify attendance tracking with automated logs that capture clock-ins, clock-outs, and breaks.</p>
+                        </CustomCaption>
+                        </Carousel.Item>
+                </Carousel>
+            </CarouselContainer>
         </div>
         <Footer/>
 

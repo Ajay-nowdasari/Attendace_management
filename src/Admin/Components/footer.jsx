@@ -1,4 +1,6 @@
 import React from 'react'
+import QR_code from "C:/Users/Harit/Desktop/project/frontend/src/assets/images/contact_QR.png"
+
 
 const Footer = () => {
   return (
@@ -19,7 +21,7 @@ const Footer = () => {
                         Mon-Sat 9:00AM - 04:00PM                    
                     </p>
                 </div>
-                <hr className='ftr_hr mt-0'/>
+                <hr className='ftr_hr mt-3'/>
 
                 {/* <!-- links --> */}
                 <div className="col-lg-3 footer_vr footer_div col-md-6 mb-4 mb-md-0" style={{flex:"1"}}>
@@ -91,13 +93,14 @@ const Footer = () => {
                     </ul>
                 </div>
                 
-                <hr className='ftr_hr mt-0'/>
+                <hr className='ftr_hr mt-3 '/>
 
                 {/* <!-- contact --> */}
-                <div className="footer_nav col-lg-3 col-md-6" style={{flex:"1"}}>
-                    <h5 className="text-uppercase">Contact</h5>
+                <div className="footer_nav col-lg-3 col-md-6" style={{display:"flex",justifyContent:"center",flex:"1"}}>
 
                     <ul className="list-unstyled">
+                    <h5 className="text-uppercase">Contact</h5>
+
                         <li>
                             <p><i className="fas fa-home"></i> Andhra Pradesh, Rajahmundry, Bommuru</p>
                         </li>
@@ -106,6 +109,13 @@ const Footer = () => {
                         </li>
                         <li>
                             <p><i className="fas fa-phone"></i> +91 765 893 **** </p>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <p>                            
+                                <img src={QR_code} alt="QR Code" width={100} height={100}/>
+                            </p>
                         </li>
                     </ul>
                 </div>

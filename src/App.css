@@ -31,12 +31,32 @@ button {
   transition: transform 0.3s, background-color 0.3s, color 0.3s;
 }
 
+tbody tr{
+  transition: transform 0.8s, background-color 0.3s, color 0.3s;
+}
+
+tbody tr:hover{
+  transform: translateY(-5px);
+  background-color: #3f4961;
+  color: var(--clr-light);
+  box-shadow: 0px 0px 10px rgb(12, 12, 12);
+}
+
 button:hover {
   transform: translateY(-5px);
   background-color: var(--clr-accent);
   color: var(--clr-light);
   box-shadow: 0px 0px 10px rgb(12, 12, 12);
 }
+
+select{
+  background-color: #3f4961;
+  color: #c3c7d3;
+  padding: 3px;
+  padding-left: 10px;
+  border-radius: 5px;
+}
+
 
 /* Admin Navigation page css */
 
@@ -45,7 +65,7 @@ button:hover {
 }
 
 nav{
-  background-color:#87d08d;
+  background-color:#3f4961;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
   position: sticky; 
   top: 0;
@@ -82,6 +102,10 @@ nav a:hover{
 nav li:first-child{
   margin-right: auto;
   cursor: pointer;
+}
+
+.top-nav{
+  color: #c3c7d3;
 }
 
 .top-nav_menu {
@@ -124,13 +148,6 @@ h1 span:nth-child(10){
 h1 span:nth-child(11){
   animation-delay: 1s;
 }
-h1 span:nth-child(12){
-  animation-delay: 1.1s;
-}
-h1 span:nth-child(13){
-  animation-delay: 1.2s;
-}
-
 
 @keyframes bounce {
   0%,100%{
@@ -155,26 +172,25 @@ h1 span:nth-child(13){
   height: 100vh;
   width: 350px;
   z-index:199;
-  background-color: rgba(255, 228, 196, 0.101);
+  background-color: #3f4961a8;
   backdrop-filter: blur(10px);
-  box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: -10px 0px 10px rgba(71, 67, 67, 0.44);
   display: none;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  border-radius: 0px;
-  transition:transform 1s ease;
+  color: #c3c7d3;
 }
 
 .sidebar a:hover{
-  background-color: #87d08d;
+  background-color: #3f4961;
   transform: scale(1.1);
   transition: 1s;
   border-radius: 30px;
 }
 
 .submenu a:hover{
-  background-color: #b8fcbe;
+  background-color: #3f4961;
   transform: scale(1.1);
   transition: 1s;
   border-radius: 20px;
@@ -208,13 +224,15 @@ h1 span:nth-child(13){
 }
 
 .sidebar li:first-child a:hover{
-  background-color: rgba(255, 228, 196, 0.101);
+  background-color: #3f496100;
   transform: scale(1);
+  border-radius: 0px;
 }
 
 .submenu li:first-child a:hover{
-  background-color: rgba(255, 228, 196, 0.101);
+  background-color: #3f496100;
   transform: scale(1);
+  border-radius: 0px;
 }
 
 .sidebar.hidden ,.submenu.hidden{
@@ -246,8 +264,10 @@ h1 span:nth-child(13){
   .navimg{
     display: none;
   }
+  .card:hover{
+    width: 50%;
+  }
 }
-
 
 /* for medium devices */
 @media(max-width: 800px){
@@ -264,8 +284,10 @@ h1 span:nth-child(13){
   *{
     font-size: 15px;
   }
+  .card:hover{
+    width: 90%;
+  }
 }
-
 
  /* for smaller devices */
 @media(max-width: 426px){
@@ -281,12 +303,20 @@ h1 span:nth-child(13){
   *{
     font-size: 14px;
   }
+  h1{
+    span{
+      font-size: 30px;
+    }
+  }
   .container{    
     flex-direction: column;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .card:hover{
+    width: 90%;
   }
 }
 
@@ -349,17 +379,40 @@ Modal.Title{
 /* student dashboard*/
 
 .std_Attendance_modal .modal-dialog {
+  height: 200vh;
   max-width: 95%; /* Change this value to your desired width */
 }
 
 .light-mode {
   background-color: rgb(255, 244, 230);
   color: black;
+  .std_mdl_hdr{
+    button{
+      border: 1px solid black;
+    }
+  }
+  .std_mdl_ftr{
+    display: contents;
+  }
 }
 
 .dark-mode {
-  background-color: #b4b7bb; 
+  background-color: #181f2f; 
   color: black; 
+  .std_mdl_hdr{
+    color:#c3c7d3;
+    background-color:#3f4961;
+    border:1px solid #c3c7d3;
+    button{
+      color: #c3c7d3;
+      border: 1px solid #c3c7d3;
+    }
+  }
+  .std_mdl_ftr{
+    background-color:#c3c7d3;
+    color:#3f4961;
+    display: contents;
+  }
 }
 
 .dark-mode .thead-dark th {
@@ -375,6 +428,8 @@ Modal.Title{
 
 .std_mdl_hdr{
   justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 /* Add Department css */
@@ -429,7 +484,6 @@ table{
   }
 }
 .card:hover{
-  width: 100%;
   height: 300px;
   .discription {
     margin-top: -0px;
@@ -487,7 +541,31 @@ ul{
 }
 
 .nav_active.active {
-  background-color: #787978;
-  color: #f6f5f5;  
-  fill: #f9f9f9;
+  background-color: #6d7db59c;
+  color: #f5f5f6b0;
+}
+
+
+/* /for log out logo */
+.cls-1{
+  fill:none;
+  stroke:#000000;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-width:20px;
+}
+
+.custom-modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.8); /* Darker black overlay */
+}
+
+.custom-modal-backdrop-light {
+  background-color: rgba(255, 255, 255, 0.8); /* Light overlay */
+}
+
+/* password reset*/
+
+.custom-modal {
+  background-color: rgba(142, 183, 201, 0.393);
+  backdrop-filter: blur(10px);/* Adjust values as needed */
 }
