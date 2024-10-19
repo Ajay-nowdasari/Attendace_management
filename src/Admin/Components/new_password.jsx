@@ -21,35 +21,39 @@ const PasswordResetForm = () => {
         const passwordPattern = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
         return passwordPattern.test(password);
     };
-const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-        ...formData,
-        [name]: value,
-    });
-
-    // Password validation
-    if (name === "password") {
-        if (!validatePassword(value)) {
-            setMessage("Password must be 8-16 characters long, include at least one letter, one number, and one special character.");
-        } else {
-            setMessage("");
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    
+        // Independent validation for password and confirmPassword
+        if (name === "password") {
+            if (!validatePassword(value)) {
+                setMessage("Password must be 8-16 characters long, include at least one letter, one number, and one special character.");
+            } else if (formData.confirmPassword && value !== formData.confirmPassword) {
+                setMessage("Passwords do not match.");
+            } else {
+                setMessage("");
+            }
         }
-    }
-
-    // Confirm password validation
-    if (name === "confirmPassword") {
-        if (value !== formData.password) {
-            setMessage("Passwords do not match.");
-        } else {
-            setMessage("");
+    
+        if (name === "confirmPassword") {
+            if (value !== formData.password) {
+                setMessage("Passwords do not match.");
+            } else {
+                setMessage("");
+            }
         }
-    }
-};
-
+    };
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        if (!validatePassword(formData.password)) {
+            setMessage("Password must be 8-16 characters long, include at least one letter, one number, and one special character.");
+            return;
+        }
         if (formData.password !== formData.confirmPassword) {
             setMessage("Passwords do not match.");
             return;

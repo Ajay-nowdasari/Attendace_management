@@ -9,7 +9,6 @@ import AdminDashboard from './Admin/Components/adminDashboard';
 import OtpVerification from './User/Components/stdOtp_verification';
 import StudentDashboard from './User/Components/StudentDashboard';
 import { useState } from 'react';
-import ForgotPassword from './Admin/Components/password_reset';
 import PasswordResetForm from './Admin/Components/new_password';
 import PasswordResetRequest from './Admin/Components/password_reset';
 function Routing() {

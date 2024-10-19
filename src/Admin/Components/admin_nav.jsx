@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Navbar, Nav, Offcanvas } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import navimg from 'C:/Users/Harit/Desktop/project/frontend/src/assets/images/gmrlogo.jpg';
+import navimg from 'C:/Users/Harit/Desktop/project/frontend/src/assets/images/gmrlogo-removebg-preview (1).png';
 import { Modal,Form,Button } from "react-bootstrap";
 import axios from "axios";
 const NavBar = () => {
@@ -12,10 +12,6 @@ const NavBar = () => {
     const [isSubmenuVisible, setSubmenuVisible] = useState(false);
     const [Show, setShow] = useState(false);
     const [isedit,setIsEdit] = useState(true);
-
-    const [Name,setName] = useState("Ajay");
-    const [email,setEmail] = useState("Ajay@gmail.com");
-    const [phone,setPhone] = useState("");
     const [adminName,setAdminName] = useState("");
     const [adminEmail,setAdminEmail] = useState("");
 
@@ -93,7 +89,12 @@ const NavBar = () => {
 
     return (
         <div>
-            <img  className="navimg" src={navimg} alt="Dr.B.R.Ambedhkar Government Model Residential Polytechnic, Rajamahendravaram" height="160" width="100%" />
+            <div className="marquee-container">
+                <div className="marquee">
+                    <img className="navimg" src={navimg} alt="Dr.B.R.Ambedhkar Government Model Residential Polytechnic, Rajamahendravaram" />
+                </div>
+            </div>
+
             <hr className="m-0"/>
             <nav>
                 {/* Sidebar Menu */}

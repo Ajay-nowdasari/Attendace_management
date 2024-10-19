@@ -89,6 +89,23 @@ const handleInputChange = (e) => {
     fectchUser();
   },[]);
 
+const [departments,setDepartments] = useState([]);
+
+useEffect(() => {
+    fetchDepartments();
+}, []);
+
+const fetchDepartments = () => {
+
+    axios.get("http://127.0.0.1:8000/api/departments/")
+        .then(response => {
+            setDepartments(response.data);
+        })
+        .catch(error => {
+            console.error("There was an error fetching the departments!", error);
+        });
+};
+
   const handleClose = () => {
     setShow(false);
   };
@@ -521,13 +538,13 @@ const handleInputChange = (e) => {
                                     required
                                 >
                                     <option value="">--Select Department--</option>
-                                    <option value="IT">IT</option>
-                                    <option value="HR">HR</option>
-                                    <option value="Finance">Finance</option>
-                                    <option value="Marketing">Marketing</option>
-                                    <option value="Operations">Operations</option>
+                                    {departments && departments.map((department) => (
+                                        <option key={department.id} value={department.id}>
+                                            {department.dept_name}
+                                        </option>
+                                    ))}
                                 </Form.Control>
-                            </Form.Group>
+                          </Form.Group>
 
                             <Form.Group controlId="formYear" className="mb-3">
                                 <Form.Label>Select a Year</Form.Label>

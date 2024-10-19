@@ -10,7 +10,7 @@ const OtpVerification = () => {
     const [isExpired, setIsExpired] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const { username, usertype } = location.state || {};
+    const { useremail, usertype } = location.state || {};
     const API_base_url = "http://127.0.0.1:8000/api/";
 
     // Handle OTP input change
@@ -40,7 +40,7 @@ const OtpVerification = () => {
     // Function to handle OTP submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!username || !usertype ) {
+        if (!useremail || !usertype ) {
             alert("Invalid session. Please login again.");
             navigate("/login");
             return;
@@ -53,7 +53,7 @@ const OtpVerification = () => {
             const response = await axios.post(
               API_base_url + "verify_otp/",
               {
-                username: username,
+                useremail: useremail,
                 otp: otp.join(''),
             },
               {
@@ -79,7 +79,30 @@ const OtpVerification = () => {
             }
         }
     };
-    
+
+    const handleResend = async () => {
+        try {
+            const response = await axios.post(
+                API_base_url + "resend_otp/",
+                { useremail: useremail },
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
+
+            if (response.data.success) {
+                alert("New OTP has been sent to your email.");
+                setTimeleft(60); // Reset the timer to 60 seconds
+                setIsExpired(false); // Reset the expired state
+            } else {
+                alert(response.data.message);
+            }
+        } catch (error) {
+            alert("Error resending OTP. Please try again.");
+        }
+    };
+
 
     return (
         <div>
@@ -116,7 +139,7 @@ const OtpVerification = () => {
                         <Button
                             className=''
                             variant="warning"
-                            onClick={handleSubmit}
+                            onClick={handleResend}
                             disabled={!isExpired} // Disable button if OTP has expired
                         >
                             Resend OTP

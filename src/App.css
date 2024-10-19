@@ -62,6 +62,32 @@ select{
 
 .navimg{
   cursor: pointer;
+  height: 160px;
+}
+
+.marquee-container {
+  overflow: hidden;
+  position: relative;
+  background-color: #e2e6f4;
+  height: 163px;
+}
+
+.marquee {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+  animation: marquee 15s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+      transform: translateX(100%);
+  }
+  100% {
+      transform: translateX(-100%);
+  }
 }
 
 nav{
@@ -261,9 +287,6 @@ h1 span:nth-child(11){
     border-right: 1px solid gray;
     height: 100px;
   }
-  .navimg{
-    display: none;
-  }
   .card:hover{
     width: 50%;
   }
@@ -293,9 +316,6 @@ h1 span:nth-child(11){
 @media(max-width: 426px){
   .sidebar{
     width: 100%;
-  }
-  .navimg{
-    display: none;
   }
   .overlay-content img {
     width: 250px;
@@ -440,7 +460,14 @@ Modal.Title{
   align-items: center; 
   gap: 10px; 
   width: 100%; 
+  flex-wrap: wrap;
   padding-bottom: 15px;
+}
+.Add_dept_div div{
+  flex-grow: 1;
+  justify-content: flex-end;
+  display: flex;
+
 }
 
 thead {
@@ -547,7 +574,7 @@ ul{
 
 
 /* /for log out logo */
-.cls-1{
+ .cls-1{
   fill:none;
   stroke:#000000;
   stroke-linecap:round;
@@ -555,17 +582,20 @@ ul{
   stroke-width:20px;
 }
 
-.custom-modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.8); /* Darker black overlay */
-}
-
-.custom-modal-backdrop-light {
-  background-color: rgba(255, 255, 255, 0.8); /* Light overlay */
-}
 
 /* password reset*/
+.custom-modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.8); 
+}
+.custom-modal-backdrop-light {
+  background-color: rgba(255, 255, 255, 0.8);
+} 
+
 
 .custom-modal {
   background-color: rgba(142, 183, 201, 0.393);
-  backdrop-filter: blur(10px);/* Adjust values as needed */
+  backdrop-filter: blur(4px);
 }
+
+
+

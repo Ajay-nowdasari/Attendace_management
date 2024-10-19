@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import { useEffect } from "react";
 import titlelogo from 'C:/Users/Harit/Desktop/project/frontend/src/assets/images/attendance_logo.png'
 import { Form, Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -111,6 +112,22 @@ const Login = () => {
         }
     };
 
+    const [departments,setDepartments] = useState([]);
+
+    useEffect(() => {
+            fetchDepartments();
+        }, []);
+
+        const fetchDepartments = () => {
+            axios.get("http://127.0.0.1:8000/api/departments/")
+                .then(response => {
+                    setDepartments(response.data);
+                })
+                .catch(error => {
+                    console.error("There was an error fetching the departments!", error);
+                });
+        };
+
 
     const handleChangeLogin = (event) => {
         const { name, value } = event.target;
@@ -127,7 +144,7 @@ const Login = () => {
             email: userLoginData.email, 
             password: userLoginData.password
         };
-        console.log("user",user)
+        console.log("mana user",user)
         try {
             const response = await axios.post(
                 admin_base_url + "user_login/",
@@ -145,7 +162,7 @@ const Login = () => {
             setTimeout(() => {
                 navigate("/OTP", {  
                     state: {
-                        username: response.data.username,
+                        useremail: response.data.useremail,
                         usertype: response.data.usertype,
                     },
                 });
@@ -200,7 +217,7 @@ const Login = () => {
                 setTimeout(() => {
                     navigate("/OTP",{        
                         state: {
-                            username: response.data.username,
+                            useremail: response.data.useremail,
                             usertype: response.data.usertype,
                         },
                     });
@@ -286,11 +303,11 @@ const Login = () => {
                                     required
                                 >
                                     <option value="">--Select Department--</option>
-                                    <option value="IT">IT</option>
-                                    <option value="HR">HR</option>
-                                    <option value="Finance">Finance</option>
-                                    <option value="Marketing">Marketing</option>
-                                    <option value="Operations">Operations</option>
+                                    {departments && departments.map((department) => (
+                                        <option key={department.id} value={department.id}>
+                                            {department.dept_name}
+                                        </option>
+                                    ))}
                                 </Form.Control>
                             </Form.Group>
 
@@ -478,28 +495,3 @@ const Login = () => {
 };
 
 export default Login;
-{/* <Modal show={showResetModal} onHide={handleCloseReset} centered>
-<Modal.Header closeButton>
-    <Modal.Title>Password Reset</Modal.Title>
-</Modal.Header>
-<Modal.Body>
-    {resetError && <div className="alert alert-danger">{resetError}</div>}
-    {resetSuccess && <div className="alert alert-success">{resetSuccess}</div>}
-    <Form onSubmit={handleResetPassword}>
-        <Form.Group controlId="formResetEmail" className="mb-3">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-                type="email"
-                placeholder="Enter your email"
-                value={resetEmail}
-                onChange={handleEmailChange}
-                required
-            />
-        </Form.Group>
-        <Button type="submit" variant="success">Send Reset Email</Button>
-    </Form>
-</Modal.Body>
-<Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseReset}>Close</Button>
-</Modal.Footer>
-</Modal> */}

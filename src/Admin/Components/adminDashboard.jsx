@@ -128,8 +128,6 @@ const AdminDashboard = ()=> {
                     </div>
                 </div>
             </div>
-            <div style={{position: "sticky", bottom: "0" , zIndex:"1"}}>
-            </div>
             <CarouselContainer>
                 <Carousel>
                     <Carousel.Item>
@@ -144,12 +142,11 @@ const AdminDashboard = ()=> {
                         </CustomCaption>
                         </Carousel.Item>
 
-                        {/* New Carousel Items */}
                         <Carousel.Item>
                         <CarouselImage
                             className="d-block w-100"
                             src={img2}
-                            alt="Fourth slide"
+                            alt="second slide"
                         />
                         <CustomCaption>
                                 <h3 className="slide-title">User-Friendly Dashboard</h3>
@@ -161,7 +158,7 @@ const AdminDashboard = ()=> {
                         <CarouselImage
                             className="d-block w-100"
                             src={img3}
-                            alt="Fifth slide"
+                            alt="third slide"
                         />
                         <CustomCaption>
                                 <h3 className="slide-title">Automated Attendance Logs</h3>
