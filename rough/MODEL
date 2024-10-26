@@ -1,0 +1,76 @@
+from django.db import models
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+import datetime
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
+
+User = get_user_model()
+
+class OTP(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    otp = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False)
+
+    def is_valid(self):
+        # Check if the OTP is still valid (1 minute validity)
+        return not self.is_verified and (timezone.now() - self.created_at) < datetime.timedelta(minutes=1)
+
+    def _str_(self):
+        return f"OTP for {self.user.email} - {self.otp}"
+    
+
+class Department(models.Model):
+    number = models.CharField(max_length=50, unique=True)  # Department number with unique constraint
+    name = models.CharField(max_length=255, unique=True)    # Department name with unique constraint
+
+    def _str_(self):
+        return self.name
+    
+
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    pin_number = models.CharField(max_length=20, unique=True)
+    email = models.EmailField(unique=True)
+    mobile_number = models.CharField(max_length=15)
+    department = models.CharField(max_length=15)
+    year = models.CharField(max_length=2)
+    section = models.CharField(max_length=10)
+    password = models.CharField(max_length=100)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  # Only hash password when creating a new student
+            self.password = make_password(self.password)
+        super().save(*args, **kwargs)
+
+    def _str_(self):
+        return self.name
+    
+class OTP2(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    otp = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False)
+
+    def is_valid(self):
+        # Check if the OTP is still valid (1 minute validity)
+        return not self.is_verified and (timezone.now() - self.created_at) < datetime.timedelta(minutes=1)
+
+    def _str_(self):
+        return f"OTP for {self.student.email} - {self.otp}"
+
+
+class Attendance(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    working_days = models.IntegerField()
+    present_days = models.IntegerField()
+    absent_days = models.IntegerField()
+    month = models.CharField(max_length=20)
+    year = models.IntegerField()
+
+    class Meta:
+        unique_together = ('student', 'month', 'year')  # Ensure unique attendance records per student per month/year
+
+    def _str_(self):
+        return f"{self.student.name} - {self.month} {self.year}"

@@ -1,0 +1,314 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
+const Attendance = () => {
+  const [students, setStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [workingDays, setWorkingDays] = useState('');
+  const [month, setMonth] = useState('');
+  const [yearFilter, setYearFilter] = useState('');
+  const [departments, setDepartments] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedSection, setSelectedSection] = useState('');
+
+  // Fetch all departments on mount
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/attendance/departments/');
+        setDepartments(response.data);
+      } catch (error) {
+        console.error('Error fetching departments:', error);
+      }
+    };
+    fetchDepartments();
+  }, []);
+
+  // Fetch students based on filters
+  const fetchStudents = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/attendance/students/');
+      setStudents(response.data);
+      setFilteredStudents(response.data); // Set initial filtered students
+    } catch (error) {
+      console.error('Error fetching students:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents(); // Fetch students on mount
+  }, []);
+
+
+  
+
+
+
+  // Filter students based on selected criteria
+  useEffect(() => {
+    const filtered = students.filter((student) => {
+      const matchesDepartment = selectedDepartment ? student.department === selectedDepartment : true;
+      const matchesYear = selectedYear ? student.year === selectedYear : true;
+      const matchesSection = selectedSection ? student.section === selectedSection : true;
+      return matchesDepartment && matchesYear && matchesSection;
+    });
+    setFilteredStudents(filtered);
+  }, [selectedDepartment, selectedYear, selectedSection, students]);
+
+  // Fetch students again when month or year changes
+  useEffect(() => {
+    if (month && yearFilter) {
+      fetchStudents(); // Re-fetch students if month or year is selected
+    }
+  }, [month, yearFilter]);
+
+ // Handle attendance checkbox changes
+const handleCheckboxChange = (index, day, event) => {
+  const updatedStudents = [...filteredStudents];
+
+  if (!updatedStudents[index].attendance) {
+    updatedStudents[index].attendance = {};
+  }
+
+  const presentDays = Object.values(updatedStudents[index].attendance).filter((isPresent) => isPresent).length;
+
+  // If the checkbox is being checked (i.e., student is marked present for the day)
+  // and the present days have already reached the working days limit, show the alert
+  if (!updatedStudents[index].attendance[day] && presentDays >= workingDays) {
+    alert('Present days cannot exceed working days!');
+    event.preventDefault();  // Prevent checkbox from toggling its state
+    return;  // Exit the function to prevent further actions
+  }
+
+  // If no limit is reached, toggle the checkbox normally
+  updatedStudents[index].attendance[day] = !updatedStudents[index].attendance[day];
+  setFilteredStudents(updatedStudents);
+};
+
+
+  // Calculate attendance percentage
+  const calculatePercentage = (presentDays, totalDays) => {
+    return totalDays > 0 ? ((presentDays / totalDays) * 100).toFixed(2) : 0;
+  };
+
+  // Save attendance data
+  const handleSaveAttendance = async () => {
+    let success = true; // Track success status
+    for (const student of filteredStudents) {
+      const presentDays = Object.values(student.attendance || {}).filter((isPresent) => isPresent).length;
+      const absentDays = workingDays - presentDays;
+
+      const attendanceRecord = {
+        student: student.id,  // Use student ID
+        working_days: workingDays,
+        present_days: presentDays,
+        absent_days: absentDays,
+        month: month,
+        year: yearFilter,
+      };
+
+      // Log the attendance data for debugging
+      console.log("Sending Attendance Data:", attendanceRecord);
+
+      try {
+        // Save attendance data for the student
+        const response = await axios.post('http://127.0.0.1:8000/attendance/save/', attendanceRecord, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.status !== 201 && response.status !== 200) {
+          success = false; // Mark as failed if the response is not successful
+        }
+      } catch (error) {
+        console.error('Error saving attendance:', error.response.data);
+        success = false; // Mark as failed on error
+      }
+    }
+    
+    // Show alert message once after processing all students
+    if (success) {
+      alert('Attendance saved/updated successfully for all students!');
+    } else {
+      alert('Failed to save attendance for some students. Please check the console for details.');
+    }
+  };
+
+  // Function to get the number of days in a month
+  const getDaysInMonth = (month, year) => {
+    return new Date(year, month, 0).getDate();
+  };
+
+  // Calculate the number of days in the selected month and year
+  const daysInMonth = month && yearFilter ? getDaysInMonth(month, yearFilter) : 0;
+
+  return (
+    <div className="attendance-container">
+      <h2 className="text-white All-txt">ATTENDANCE MANAGEMENT</h2>
+{/* filters */}
+      <div className="row mb-3">
+{/* dept filter */}
+        <div className="col-md-4">
+          <select
+            className="form-select"
+            value={selectedDepartment}
+            onChange={(e) => setSelectedDepartment(e.target.value)}
+          >
+            <option value="">Select Department</option>
+            {departments.map((dept) => (
+              <option key={dept.id} value={dept.name}>
+                {dept.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+{/* year filter */}
+        <div className="col-md-4">
+          <select
+            className="form-select"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+          >
+            <option value="">Select Year</option>
+            {['1', '2', '3'].map((yr) => (
+              <option key={yr} value={yr}>
+                {yr}
+              </option>
+            ))}
+          </select>
+        </div>
+{/* section filter */}
+        <div className="col-md-4">
+          <select
+            className="form-select"
+            value={selectedSection}
+            onChange={(e) => setSelectedSection(e.target.value)}
+          >
+            <option value="">Select Section</option>
+            {['1 - Shift', '2 - Shift'].map((sec) => (
+              <option key={sec} value={sec}>
+                {sec}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+{/* validations */}
+      <div className="row mb-3">
+        {/* no.of working days */}
+        <div className="col-md-4">
+          <input
+            type="number"
+            className="form-control"
+            placeholder="Working Days"
+            value={workingDays}
+            onChange={(e) => setWorkingDays(e.target.value)}
+          />
+        </div>
+
+        {/* month filter */}
+        <div className="col-md-4">
+          <select
+            className="form-select"
+            value={month}
+            onChange={(e) => {
+              setMonth(e.target.value);
+              setFilteredStudents([]); // Reset filtered students when month changes
+            }}
+          >
+            <option value="">Select Month</option>
+            {Array.from({ length: 12 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>
+                {new Date(0, i).toLocaleString('default', { month: 'long' })}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* year filter */}
+        <div className="col-md-4">
+          <input
+            type="number"
+            className="form-control"
+            placeholder="Year"
+            value={yearFilter}
+            onChange={(e) => {
+              setYearFilter(e.target.value);
+              setFilteredStudents([]); // Reset filtered students when year changes
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Table for attendance */}
+      <div className="table-responsive-container">
+        <table className="table table-bordered table-responsive">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Student ID</th>
+              <th>Student Name</th>
+              <th>Department</th> {/* Added Department */}
+              <th>Year</th> {/* Added Year */}
+              <th>Section</th> {/* Added Section */}
+              {Array.from({ length: daysInMonth }, (_, i) => (
+                <th key={i + 1}>{i + 1}</th>
+              ))}
+              <th>Present Days</th>
+              <th>Absent Days</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredStudents.length === 0 ? (
+              <tr>
+                <td colSpan={10} className="text-center">
+                  No Students found
+                </td>
+              </tr>
+            ) : (
+              filteredStudents.map((student, index) => {
+                const presentDays = Object.values(student.attendance || {}).filter((isPresent) => isPresent).length;
+                const absentDays = workingDays - presentDays;
+                const attendancePercentage = calculatePercentage(presentDays, workingDays);
+
+                return (
+                  <tr key={student.id}>
+                    <td>{index + 1}</td>
+                    <td>{student.id}</td>
+                    <td>{student.name}</td>
+                    <td>{student.department}</td>
+                    <td>{student.year}</td>
+                    <td>{student.section}</td>
+                    {Array.from({ length: daysInMonth }, (_, dayIndex) => (
+                      <td key={dayIndex + 1}>
+                        <input
+                            type="checkbox"
+                            checked={student.attendance && student.attendance[dayIndex + 1]}
+                            onChange={(event) => handleCheckboxChange(index, dayIndex + 1, event)}  // Pass the event here
+                        /> 
+                      </td>
+                    ))}
+                    <td>{presentDays}</td>
+                    <td>{absentDays}</td>
+                    <td>{attendancePercentage}%</td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <button className="btn btn-primary" onClick={handleSaveAttendance}>
+        Save Attendance
+      </button>
+    </div>
+  );
+};
+
+export default Attendance;
