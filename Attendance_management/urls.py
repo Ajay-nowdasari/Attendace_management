@@ -31,4 +31,5 @@ urlpatterns = [
       
       path('updateAttendance/', AttendanceCreateUpdateView.as_view(), name='update-attendance'),
       path('student/<int:student_id>/attendance/', StudentAttendanceListView.as_view(), name='student-attendance'),
+      path('send_email/', send_email, name='send_email'),
  ]

@@ -346,3 +346,21 @@ class StudentAttendanceListView(generics.ListAPIView):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+@api_view(['POST'])
+def send_email(request):
+    try:
+        email = request.data.get('email')
+        subject = request.data.get('subject')
+        message = request.data.get('message')
+        
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,  # Replace with your "from" email address
+            [email],
+            fail_silently=False,
+        )
+        
+        return Response({"success": "Email sent successfully"}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
