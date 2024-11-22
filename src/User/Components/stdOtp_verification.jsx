@@ -100,13 +100,14 @@ const OtpVerification = () => {
         audio.play();
     };
     // Function to handle OTP submission
+    // Function to handle OTP submission
     const handleSubmit = async (e) => {
-        playClick()
+        playClick();
         e.preventDefault();
         setLoadingSubmit(true);
         if (!useremail || !usertype) {
             toast.error("Invalid session. Please login again.");
-            navigate("/login");
+            navigate("/login", { replace: true });
             return;
         }
         if (isExpired) {
@@ -126,21 +127,19 @@ const OtpVerification = () => {
                 }
             );
             if (response.data.success) {
-                localStorage.clear()
-                localStorage.setItem("useremail", useremail)
-                localStorage.setItem("access_token", access_token)
-                localStorage.setItem("refresh_token", refresh_token)
-                localStorage.setItem("user_type", usertype)
+                localStorage.clear();
+                localStorage.setItem("useremail", useremail);
+                localStorage.setItem("access_token", access_token);
+                localStorage.setItem("refresh_token", refresh_token);
+                localStorage.setItem("user_type", usertype);
                 if (usertype === "user") {
-                    navigate("/Student_dashboard");
+                    navigate("/Student_dashboard", { replace: true });
                 } else if (usertype === "admin") {
-                    navigate("/Admin_dashboard");
-                } else {
-                    navigate("/All_students");
+                    navigate("/Admin_dashboard", { replace: true });
                 }
             } else {
                 toast.error("Invalid OTP");
-                navigate("/");
+                navigate("/", { replace: true });
             }
         } catch (error) {
             if (error.response) {
@@ -150,6 +149,7 @@ const OtpVerification = () => {
             setLoadingSubmit(false);
         }
     };
+
 
     const handleResend = async () => {
         playClick();
@@ -184,9 +184,9 @@ const OtpVerification = () => {
             <ToastContainer />
             <div className="background-image"></div>
             <div className="overlay-content">
-                <h2>Otp Verification</h2>
-                <p>Check your E-mail</p>
-                <p>Enter the senden{otpLength}-digit OTP</p>
+                    <h2>OTP Verification</h2>
+                    <p>Check your email for the OTP.</p>
+                    <p>Enter the {otpLength }-digit code below.</p>
 
                 <form>
                     <div className="otp-area p-4">

@@ -1,4 +1,3 @@
-import { Row } from "react-bootstrap";
 import NavBar from "./admin_nav";
 import Footer from "./footer";
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,7 +12,7 @@ import DropdownSound from "../../assets/sounds/dropdown.mp3";
 import typingSound from "../../assets/sounds/typing.mp3";
 import { Spinner } from "react-bootstrap";
 const Attendance = () => {
-
+    const API_base_url = "http://127.0.0.1:8000/api/";
     const [workingDays, setWorkingDays] = useState(25);
     const [month, setMonth] = useState('');
     const [yearFilter, setYearFilter] = useState('');
@@ -64,7 +63,6 @@ const Attendance = () => {
         fetchDepartments();
     }, []);
     const fetchDepartments = () => {
-
         axios.get("http://127.0.0.1:8000/api/departments/")
             .then(response => {
                 setDepartments(response.data);
@@ -100,6 +98,19 @@ const Attendance = () => {
         }
     }, [month, yearFilter]);
 
+    const sendEmail = async (email, subject, message) => {
+        try {
+            await axios.post(
+                API_base_url + "send_email/",
+                { email, subject, message }
+            );
+            console.log("Email sent successfully");
+        } catch (error) {
+            console.error("Failed to send email:", error);
+        }
+    };
+    
+
     const calculatePercentage = (presentDays, totalDays) => {
         return totalDays > 0 ? ((presentDays / totalDays) * 100).toFixed(2) : 0;
     };
@@ -134,6 +145,7 @@ const Attendance = () => {
         for (const student of filteredStudents) {
             const presentDays = Object.values(student.attendance || {}).filter((isPresent) => isPresent).length;
             const absentDays = workingDays - presentDays;
+            const attendancePercentage = calculatePercentage(presentDays, workingDays);
 
             const attendanceRecord = {
                 student: student.id,  // Use student ID
@@ -145,11 +157,27 @@ const Attendance = () => {
             };
 
             // Log the attendance data for debugging
-            console.log("Sending Attendance Data:", attendanceRecord);
+            let subject, Student_message,Parent_message;
 
-            try {
+            if (attendancePercentage <= 65) {
+                subject = 'Attendance Warning';
+                Student_message = `Your attendance is below 65%. Current attendance: ${attendancePercentage}%`;
+                Parent_message = `Your child ${student.name}'s attendance is below 65%. Current attendance: ${attendancePercentage}%`;
+            } else if (attendancePercentage <= 75) {
+                subject = 'Attendance Alert';
+                Student_message = `Your attendance is between 65% and 75%. Current attendance: ${attendancePercentage}%`;
+                Parent_message = `Your child ${student.name}'s attendance is between 65% and 75%. Current attendance: ${attendancePercentage}%`;
+            } else {
+                subject = 'Attendance Updated';
+                Student_message = `Your attendance is above 75%. Current attendance: ${attendancePercentage}%`;
+                Parent_message = `Your child ${student.name}'s attendance is above 75%. Current attendance: ${attendancePercentage}%`;
+            }
+            console.log("parent email ",student.parent_email)
+            await sendEmail(student.email, subject, Student_message);
+            await sendEmail(student.parent_email, subject, Parent_message);
+                try {
                 // Save attendance data for the student
-                const response = await axios.post('http://127.0.0.1:8000/api/updateAttendance/', attendanceRecord, {
+                const response = await axios.post(API_base_url+'updateAttendance/', attendanceRecord, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -388,8 +416,7 @@ const Attendance = () => {
                                 )}
                             </button>
                         </div>
-                        <div className="table-responsive scrollable-content" style={{ maxHeight: '410px' }}>
-                            <div class="search-container">
+                        <div class="search-container">
                                 <input
                                     type="text"
                                     placeholder="Search Students..."
@@ -403,11 +430,11 @@ const Attendance = () => {
                                     <path d="M15 11.5C15 13.433 13.433 15 11.5 15C9.567 15 8 13.433 8 11.5C8 9.567 9.567 8 11.5 8C13.433 8 15 9.567 15 11.5Z" stroke="#3f4961" stroke-width="2" />
                                 </svg>
                             </div>
+                        <div className="table-responsive scrollable-content" style={{ maxHeight: '410px' }}>
                             <table className="table table-hover table-dark table-striped table-bordered">
                                 <thead className="table-warning" style={{ zIndex: "0" }}>
                                     <tr>
                                         <th>S.No</th>
-                                        <th>Student ID</th>
                                         <th>Student Name</th>
                                         <th>Department</th> {/* Added Department */}
                                         <th>Year</th> {/* Added Year */}
@@ -445,7 +472,6 @@ const Attendance = () => {
                                                 return (
                                                     <tr key={student.id}>
                                                         <td>{index + 1}</td>
-                                                        <td>{student.id}</td>
                                                         <td>{student.name}</td>
                                                         <td>{student.dept_name}</td>
                                                         <td>{student.year}</td>

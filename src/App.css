@@ -297,7 +297,7 @@ h1 span:nth-child(11){
     border-right: 1px solid gray;
     height: 100px;
   }
-  .card:hover{
+  .admin_card:hover{
     width: 50%;
   }
 }
@@ -317,7 +317,7 @@ h1 span:nth-child(11){
   *{
     font-size: 15px;
   }
-  .card:hover{
+  .admin_card:hover{
     width: 90%;
   } 
   .navimg{
@@ -348,7 +348,7 @@ h1 span:nth-child(11){
     justify-content: center;
     align-items: center;
   }
-  .card:hover{
+  .admin_card:hover{
     width: 90%;
   }
   .marquee-container{
@@ -527,7 +527,7 @@ table{
   width: 100%;
   margin-bottom: 15px;
 }
-.card{
+.admin_card{
   width: 45%;
   transition: all 1s ease-in;
   overflow: hidden;
@@ -543,17 +543,17 @@ table{
     margin-top: -75px;
   }
 }
-.card:hover{
+.admin_card:hover{
   height: 300px;
   .discription {
     margin-top: -0px;
   }
 }
-.card .discription {
+.admin_card .discription {
   opacity: 0;
   transition: opacity 1s ease;
 }
-.card:hover .discription{
+.admin_card:hover .discription{
   opacity: 1;
 }
 
@@ -915,4 +915,44 @@ dt{
 dd{
   padding-left: 20px;
   color:rgb(20, 75, 102);
+}
+.about-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.card-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.team-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.team-card {
+  border: none;
+  overflow: hidden;
+}
+
+.team-image {
+  height: 150px;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .about-title {
+    font-size: 2rem;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+  }
 }

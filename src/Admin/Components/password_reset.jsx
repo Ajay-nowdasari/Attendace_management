@@ -3,7 +3,8 @@ import { Button, FloatingLabel, Form, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {Spinner} from 'react-bootstrap';
-
+import clickSound from "../../assets/sounds/mouse-click-153941.mp3";
+import closeSound from "../../assets/sounds/close.mp3";
 const PasswordResetRequest = ({ show, onHide }) => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
@@ -11,13 +12,23 @@ const PasswordResetRequest = ({ show, onHide }) => {
 
     const navigate = useNavigate();
 
+    const playClick = () => {
+        const audio = new Audio(clickSound);
+        audio.play();
+    };
+
+    const playClose = () => {
+        const audio = new Audio(closeSound);
+        audio.play();
+    }
     const handleSubmit = async (e) => {
+        playClick();
         e.preventDefault();
         setLoading(true);
         try {
             await axios.post('http://127.0.0.1:8000/api/request-password-reset/', { email });
             setMessage("Check your email for a link to reset your password.");
-            navigate("/reset-password");
+            navigate(`/reset-password?email=${encodeURIComponent(email)}`);
         } catch (error) {
             console.error("Error sending password reset email:", error);
             setMessage("Failed to send reset email.");

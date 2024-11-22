@@ -5,10 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Routing from './Routing';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import NetworkStatus from './User/Components/NetworkStatus';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <NetworkStatus/>
     <Router>
     <Routing />
     </Router>

@@ -9,6 +9,7 @@ import clickSound from "../../assets/sounds/mouse-click-153941.mp3";
 import closeSound from "../../assets/sounds/close.mp3";
 import deleteSound from "../../assets/sounds/delete.mp3"
 import { Spinner } from "react-bootstrap";
+import { fetchStudents } from "../../api";
 const AddDept = () => {
     const [show, setShow] = useState(false);
     const [deptId, setDeptId] = useState("");
@@ -25,8 +26,11 @@ const AddDept = () => {
     const [showOkDeleteModal, setShowOkDeleteModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredDepartments, setFilteredDepartments] = useState(departments);
-    const inputRef = useRef(null);
+    const [existingdept,setExistingDept] = useState('');
+    const [deleteName, setDeleteName] = useState(""); // Store the department name for checking
+    const [showSpecialDeleteModal, setShowSpecialDeleteModal] = useState(false); // New state for the special modal
 
+    const inputRef = useRef(null);
     const handleIconClick = () => {
         if (inputRef.current) {
             inputRef.current.focus();
@@ -147,19 +151,6 @@ const AddDept = () => {
         setFilteredDepartments(filtered);
     }, [searchQuery, departments]); // Add departments to dependencies
 
-
-    // Helper function to extract and format error messages
-    const extractErrorMessages = (data) => {
-        let messages = [];
-        for (const key in data) {
-            if (data.hasOwnProperty(key) && Array.isArray(data[key])) {
-                messages.push(`${key}: ${data[key].join(", ")}`);
-            }
-        }
-        return messages.join("\n");
-    };
-
-
     const handleUpdate = (id) => {
         playClick();
         const dept = departments.find(d => d.id === id);
@@ -170,9 +161,14 @@ const AddDept = () => {
         setShow(true);
     }
 
-    const handleDelete = (id) => {
+    const handleDelete = (id,name) => {
         setDeleteId(id); // Store ID of the student to be deleted
         setShowOkDeleteModal(true);
+        if (existingdept.includes(name)) {
+            setShowSpecialDeleteModal(true); // Show special confirmation modal
+        } else {
+            setShowOkDeleteModal(true); // Show normal confirmation modal
+        }
     }
     const confirmDelete = async () => {
         if (deleteId) {
@@ -192,6 +188,8 @@ const AddDept = () => {
             } finally {
                 setDeleteLoading(false);
                 setShowOkDeleteModal(false); // Close the modal after deletion
+                setShowSpecialDeleteModal(false); // Close special modal if it was open
+                setDeleteName(""); // Reset the department name
                 setDeleteId(null); // Reset the deleteId state
             }
         }
@@ -199,9 +197,31 @@ const AddDept = () => {
 
     const handleCloseDeleteModal = () => {
         setShowOkDeleteModal(false);
+        setShowSpecialDeleteModal(false); // Close special modal if it was open
+        setDeleteName(""); // Clear stored name
         setDeleteId(null); // Clear stored ID
         setDeleteLoading(false); // Stop loading spinner if the modal is closed
     };
+
+    useEffect(() => {
+        loadStudents();
+    }, []);
+    const loadStudents = async () => {
+        try {
+            const fetchedStudents = await fetchStudents();
+            console.log("students Dept:", fetchedStudents);
+    
+            // Collect all dept_name values in an array
+            if (Array.isArray(fetchedStudents)) {
+                const allDeptNames = fetchedStudents.map(student => student.dept_name);
+                setExistingDept(allDeptNames); // Assuming `setExistingDept` can handle an array
+                console.log("All Dept Names:", allDeptNames);
+            }
+        } catch (error) {
+            console.error("Error fetching students:", error);
+        }
+    };
+
     return (
         <div className="for_ftr">
             <ToastContainer />
@@ -224,81 +244,81 @@ const AddDept = () => {
                     </Button>
                 </div>
 
+                <div className="attendance-tbl m-3  p-2 border rounded-sm">
+                    <div class="search-container">
+                        <input
+                            type="text"
+                            placeholder="Search Departments..."
+                            value={searchQuery}
+                            ref={inputRef}
+                            onChange={(event) => setSearchQuery(event.target.value)}
+                            className="search-input-slide" />
+                        <svg onClick={handleIconClick} style={{ cursor: "pointer" }} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#c3c7d3" d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#7b42f5" stroke-width="2" />
+                            <path d="M14 14L16 16" stroke="#3f4961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M15 11.5C15 13.433 13.433 15 11.5 15C9.567 15 8 13.433 8 11.5C8 9.567 9.567 8 11.5 8C13.433 8 15 9.567 15 11.5Z" stroke="#3f4961" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div className="table-responsive scrollable-content" style={{ maxHeight: '410px', overflowY: 'auto' }}>
+                        <div className="mx-3 p-2 border rounded-sm">
 
-
-                <div className="table-responsive scrollable-content" style={{ maxHeight: '410px', overflowY: 'auto' }}>
-                    <div className="mx-3 p-2 border rounded-sm">
-                        <div class="search-container">
-                            <input
-                                type="text"
-                                placeholder="Search Departments..."
-                                value={searchQuery}
-                                ref={inputRef}
-                                onChange={(event) => setSearchQuery(event.target.value)}
-                                className="search-input-slide" />
-                            <svg onClick={handleIconClick} style={{ cursor: "pointer" }} width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill="#c3c7d3" d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#7b42f5" stroke-width="2" />
-                                <path d="M14 14L16 16" stroke="#3f4961" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M15 11.5C15 13.433 13.433 15 11.5 15C9.567 15 8 13.433 8 11.5C8 9.567 9.567 8 11.5 8C13.433 8 15 9.567 15 11.5Z" stroke="#3f4961" stroke-width="2" />
-                            </svg>
-                        </div>
-                        <table className="table table-hover table-bordered Add_dept_tbl">
-                            <thead className="thead-dark table-warning" style={{ zIndex: "0" }}>
-                                <tr>
-                                    <th>S.no</th>
-                                    <th>Department ID</th>
-                                    <th>Department Name</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            {loading ? (
-                                <>
-                                    <div className="table-spinner" role="status">
-                                        <div className="dot"></div>
-                                        <div className="dot"></div>
-                                        <div className="dot"></div>
-                                        <div className="dot"></div>
-                                        <span className="visually-hidden">Loading...</span>
-                                    </div>
-                                </>
-                            ) : (
-                                <tbody className='table-secondary'>
-                                    {filteredDepartments.length === 0 ? (
-                                        <tr>
-                                            <td colSpan={4} className="text-center">
-                                                No Departments found
-                                            </td>
-                                        </tr>
-                                    ) : (
-                                        filteredDepartments.map((entry, index) => (
-                                            <tr key={entry.id}>
-                                                <td>{index + 1}</td>
-                                                <td>{entry.dept_id}</td>
-                                                <td>{entry.dept_name}</td>
-                                                <td style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center" }}>
-                                                    <Button
-                                                        variant="secondary"
-                                                        onClick={() => handleUpdate(entry.id)}
-                                                        className="me-2"
-                                                    >
-                                                        Edit
-                                                    </Button>
-                                                    <Button
-                                                        variant="danger"
-                                                        onClick={() => handleDelete(entry.id)}
-                                                    >
-                                                        Delete
-                                                    </Button>
+                            <table className="table table-hover table-bordered Add_dept_tbl">
+                                <thead className="thead-dark table-warning" style={{ zIndex: "0" }}>
+                                    <tr>
+                                        <th>S.no</th>
+                                        <th>Department ID</th>
+                                        <th>Department Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                {loading ? (
+                                    <>
+                                        <div className="table-spinner" role="status">
+                                            <div className="dot"></div>
+                                            <div className="dot"></div>
+                                            <div className="dot"></div>
+                                            <div className="dot"></div>
+                                            <span className="visually-hidden">Loading...</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <tbody className='table-secondary'>
+                                        {filteredDepartments.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={4} className="text-center">
+                                                    No Departments found
                                                 </td>
                                             </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            )}
-                        </table>
+                                        ) : (
+                                            filteredDepartments.map((entry, index) => (
+                                                <tr key={entry.id}>
+                                                    <td>{index + 1}</td>
+                                                    <td>{entry.dept_id}</td>
+                                                    <td>{entry.dept_name}</td>
+                                                    <td style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center" }}>
+                                                        <Button
+                                                            variant="secondary"
+                                                            onClick={() => handleUpdate(entry.id)}
+                                                            className="me-2"
+                                                        >
+                                                            Edit
+                                                        </Button>
+                                                        <Button
+                                                            variant="danger"
+                                                            onClick={() => handleDelete(entry.id,entry.dept_name)}
+                                                        >
+                                                            Delete
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                )}
+                            </table>
+                        </div>
                     </div>
                 </div>
-
                 <Modal show={show} onHide={handleClose} centered>
 
                     <Modal.Header closeButton className="px-4">
@@ -368,6 +388,7 @@ const AddDept = () => {
                     </Modal.Footer>
                 </Modal>
                 <Footer />
+
                 {/* Delete Confirmation Modal */}
                 <Modal show={showOkDeleteModal} onHide={handleCloseDeleteModal} centered>
                     <Modal.Header closeButton className="bg-danger text-white">
@@ -389,6 +410,28 @@ const AddDept = () => {
                         </div>
                     </Modal.Body>
                 </Modal>
+
+                            {/* Special Delete Confirmation Modal */}
+            <Modal show={showSpecialDeleteModal} onHide={handleCloseDeleteModal} centered>
+                <Modal.Header closeButton className="bg-warning text-white">
+                    <Modal.Title>Special Confirmation</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="text-center">
+                    <p>This department is currently in use by students. Are you sure you want to delete it?</p>
+                    <div className="d-flex justify-content-center">
+                        <Button variant="warning" onClick={confirmDelete} className="me-3">
+                            {deleteLoading ? (
+                                <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
+                            ) : (
+                                "Yes, Delete Anyway!"
+                            )}
+                        </Button>
+                        <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                            No
+                        </Button>
+                    </div>
+                </Modal.Body>
+            </Modal>
             </div>
         </div>
     );

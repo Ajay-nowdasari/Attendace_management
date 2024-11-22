@@ -60,7 +60,6 @@ class OTP2(models.Model):
     def _str_(self):
         return f"OTP for {self.student.email} - {self.otp}"
 
-
 class Attendance(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     working_days = models.IntegerField()
