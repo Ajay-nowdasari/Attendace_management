@@ -9,7 +9,7 @@ class user_registration_Serializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student_user
-        fields = ['user', 'name', 'email', 'password', 'confirm_password', 'dept', 'year', 'section']
+        fields = ['user', 'name', 'email','parent_email', 'password', 'confirm_password', 'dept', 'year', 'section']
 
     def validate_email(self, value):
         # Check if the email already exists in the Student_user model
@@ -48,6 +48,7 @@ class user_registration_Serializer(serializers.ModelSerializer):
             user=user,
             name=validated_data['name'],
             email=validated_data['email'],
+            parent_email=validated_data['parent_email'],
             password=hashed_password,
             dept=department,  # Use the Department object
             year=validated_data.get('year', '1st'), 
@@ -137,7 +138,7 @@ class userSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student_user
-        fields = ["id", "user", "name", "email", "dept", "dept_name", "year", "section"]
+        fields = ["id", "user", "name", "email","parent_email", "dept", "dept_name", "year", "section"]
 
     def update(self, instance, validated_data):
         # Update the related CustomUser fields first

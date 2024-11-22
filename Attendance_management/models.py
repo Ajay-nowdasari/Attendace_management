@@ -86,6 +86,7 @@ class Student_user(models.Model):
     year = models.CharField(max_length=10, choices=YEAR_CHOICES , default='1st')
     section = models.CharField(max_length=5, choices=SECTION_CHOICES , default='A')
     email = models.EmailField(unique=True)
+    parent_email = models.EmailField(null=True, blank=True)
     password = models.CharField(max_length=16) 
 
     def delete(self, *args, **kwargs):

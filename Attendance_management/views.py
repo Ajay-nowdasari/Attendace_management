@@ -1,20 +1,12 @@
-from django.shortcuts import render,get_object_or_404
 from .serializers import *
 from .models import *
-from django.http import JsonResponse
 from rest_framework import generics,status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes,force_str
-from django.contrib.auth.tokens import default_token_generator, PasswordResetTokenGenerator
 from django.conf import settings
 from .utils import send_otp_email  # Assuming this utility function sends the OTP email
 
@@ -39,6 +31,7 @@ class user_Login_view(APIView):
             refresh_token = str(refresh)
             name = user.name
             usertype = "user"
+            
             otp_instance = OTP(user=user)
             otp_instance.save()
             try:
